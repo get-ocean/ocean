@@ -1,0 +1,33 @@
+import { COLORS } from '@/theme/colors'
+import { isLiquidGlassAvailable } from 'expo-glass-effect'
+import { Stack } from 'expo-router'
+import { Platform } from 'react-native'
+
+export default function DropletHomeLayout() {
+    return (
+        <Stack
+            screenOptions={{
+                headerShown: false,
+                headerLargeTitle: true,
+                headerTransparent: Platform.OS === 'ios',
+                headerBlurEffect: isLiquidGlassAvailable() ? undefined : 'regular',
+                headerShadowVisible: true,
+                headerLargeTitleStyle: {
+                    color: COLORS.primary,
+                },
+                headerTintColor: COLORS.text,
+                headerStyle: isLiquidGlassAvailable()
+                    ? undefined
+                    : {
+                          backgroundColor: COLORS.bgApp,
+                      },
+                contentStyle: {
+                    backgroundColor: COLORS.bgApp,
+                },
+                title: '',
+            }}
+        >
+            <Stack.Screen name="index" />
+        </Stack>
+    )
+}
