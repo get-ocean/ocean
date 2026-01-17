@@ -12,7 +12,7 @@ if (process.argv.some((arg) => arg.includes('android'))) {
     console.log('Applying AWS SDK ESM tweak only on Android')
     config.resolver = {
         ...config.resolver,
-        resolverMainFields: ['react-native', 'module', 'browser', 'main'],
+        resolverMainFields: ['react-native', 'browser', 'main'],
     }
 
     config.resolver.unstable_enablePackageExports = false
