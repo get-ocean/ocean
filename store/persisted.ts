@@ -51,6 +51,8 @@ interface PersistedStoreState {
     acknowledge: (type: keyof PersistedStoreState['acknowledgments']) => void
 
     hasSeenOnboarding: boolean
+
+    installationTs: number
 }
 
 export const usePersistedStore = create<PersistedStoreState>()(
@@ -145,6 +147,8 @@ export const usePersistedStore = create<PersistedStoreState>()(
             },
 
             hasSeenOnboarding: false,
+
+            installationTs: 0,
         }),
         {
             name: 'ocean-persisted-store',
