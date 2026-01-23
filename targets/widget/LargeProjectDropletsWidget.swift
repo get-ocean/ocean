@@ -20,7 +20,6 @@ struct LargeProjectDropletsProvider: AppIntentTimelineProvider {
   }
   
   func timeline(for configuration: LargeProjectDropletsAppIntentConfiguration, in context: Context) async -> Timeline<LargeProjectDropletsEntry> {
-    var entries: [LargeProjectDropletsEntry] = []
     var isSubscribed: Bool = false
     var dropletRows: [DropletRow] = []
 
@@ -51,14 +50,9 @@ struct LargeProjectDropletsProvider: AppIntentTimelineProvider {
       }
     }
     
-    let currentDate = Date()
-    for hourOffset in 0 ..< 5 {
-      let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-      let entry = LargeProjectDropletsEntry(date: entryDate, configuration: configuration, isSubscribed: isSubscribed, droplets: dropletRows)
-      entries.append(entry)
-    }
-    
-    return Timeline(entries: entries, policy: .atEnd)
+    let entry = LargeProjectDropletsEntry(date: Date(), configuration: configuration, isSubscribed: isSubscribed, droplets: dropletRows)
+    let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
+    return Timeline(entries: [entry], policy: .after(nextUpdate))
   }
 }
 

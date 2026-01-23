@@ -31,7 +31,6 @@ struct MediumDropletBandwidthProvider: AppIntentTimelineProvider {
   }
   
   func timeline(for configuration: MediumDropletBandwidthAppIntentConfiguration, in context: Context) async -> Timeline<MediumDropletBandwidthEntry> {
-    var entries: [MediumDropletBandwidthEntry] = []
     var isSubscribed: Bool = false
     var bandwidthData: DropletBandwidthTotals = .init(inboundPublic: nil, outboundPublic: nil, inboundPrivate: nil, outboundPrivate: nil)
     
@@ -45,15 +44,9 @@ struct MediumDropletBandwidthProvider: AppIntentTimelineProvider {
       }
     }
     
-    // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-    let currentDate = Date()
-    for hourOffset in 0 ..< 5 {
-      let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-      let entry = MediumDropletBandwidthEntry(date: entryDate, configuration: configuration, isSubscribed: isSubscribed, bandwidth: bandwidthData)
-      entries.append(entry)
-    }
-    
-    return Timeline(entries: entries, policy: .atEnd)
+    let entry = MediumDropletBandwidthEntry(date: Date(), configuration: configuration, isSubscribed: isSubscribed, bandwidth: bandwidthData)
+    let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
+    return Timeline(entries: [entry], policy: .after(nextUpdate))
   }
 }
 

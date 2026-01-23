@@ -38,7 +38,6 @@ struct MediumDropletStatsProvider: AppIntentTimelineProvider {
   }
   
   func timeline(for configuration: MediumDropletStatsAppIntentConfiguration, in context: Context) async -> Timeline<MediumDropletStatsEntry> {
-    var entries: [MediumDropletStatsEntry] = []
     var isSubscribed: Bool = false
     var metricsData: StatsNowWidgetData = .init(cpuPercent: nil, memoryPercent: nil, diskPercent: nil)
     
@@ -56,15 +55,9 @@ struct MediumDropletStatsProvider: AppIntentTimelineProvider {
       }
     }
     
-    // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-    let currentDate = Date()
-    for hourOffset in 0 ..< 5 {
-      let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-      let entry = MediumDropletStatsEntry(date: entryDate, configuration: configuration, isSubscribed: isSubscribed, metrics: metricsData)
-      entries.append(entry)
-    }
-    
-    return Timeline(entries: entries, policy: .atEnd)
+    let entry = MediumDropletStatsEntry(date: Date(), configuration: configuration, isSubscribed: isSubscribed, metrics: metricsData)
+    let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
+    return Timeline(entries: [entry], policy: .after(nextUpdate))
   }
 }
 
