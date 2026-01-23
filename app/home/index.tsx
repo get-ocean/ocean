@@ -33,7 +33,7 @@ import { parseZone } from 'dnsz'
 import { isLiquidGlassAvailable } from 'expo-glass-effect'
 import * as Haptics from 'expo-haptics'
 import * as QuickActions from 'expo-quick-actions'
-import { Stack } from 'expo-router'
+import { Stack, useNavigation } from 'expo-router'
 import { router } from 'expo-router'
 import * as StoreReview from 'expo-store-review'
 import { usePlacement, useSuperwall, useUser } from 'expo-superwall'
@@ -97,6 +97,9 @@ export default function HomeScreen() {
     const switchConnection = usePersistedStore((state) => state.switchConnection)
     const minimizedTypes = usePersistedStore((state) => state.minimizedTypes)
     const toggleMinimizedType = usePersistedStore((state) => state.toggleMinimizedType)
+
+    const navigation = useNavigation()
+    const [searchText, setSearchText] = useState('')
 
     const currentProjectId = useMemo(
         () => currentConnection?.currentProjectId,
@@ -253,6 +256,68 @@ export default function HomeScreen() {
         return counts
     }, [projectResources])
 
+    const filteredResources = useMemo(() => {
+        if (!projectResources) return null
+        if (!searchText.trim()) return projectResources
+
+        const getSearchableText = (type: string, idOrName: string): string => {
+            const queryKeyMap: Record<string, string[]> = {
+                droplet: ['droplets', idOrName],
+                volume: ['volume', idOrName],
+                dbaas: ['databaseCluster', idOrName],
+                loadbalancer: ['loadBalancer', idOrName],
+                app: ['app', idOrName],
+                domain: ['domain', idOrName],
+                space: ['spaces', idOrName],
+            }
+
+            const queryKey = queryKeyMap[type]
+            if (!queryKey) return idOrName
+
+            const cachedData = queryClient.getQueryData(queryKey) as Record<string, any> | undefined
+            if (!cachedData) return idOrName
+
+            if (type === 'app') {
+                return cachedData.spec?.name || idOrName
+            }
+
+            return cachedData.name || idOrName
+        }
+
+        const query = searchText.toLowerCase().trim()
+        const result: typeof projectResources = []
+
+        let currentType: string | null = null
+        let currentTypeHasMatches = false
+        let currentTypeItems: (typeof projectResources)[number][] = []
+
+        for (const resource of projectResources) {
+            if (typeof resource === 'string') {
+                if (currentType && currentTypeHasMatches) {
+                    result.push(currentType as (typeof projectResources)[number])
+                    result.push(...currentTypeItems)
+                }
+                currentType = resource
+                currentTypeHasMatches = false
+                currentTypeItems = []
+            } else {
+                const searchableText = getSearchableText(resource.type, resource.idOrName)
+                const matches = searchableText.toLowerCase().includes(query)
+                if (matches) {
+                    currentTypeHasMatches = true
+                    currentTypeItems.push(resource)
+                }
+            }
+        }
+
+        if (currentType && currentTypeHasMatches) {
+            result.push(currentType as (typeof projectResources)[number])
+            result.push(...currentTypeItems)
+        }
+
+        return result
+    }, [projectResources, searchText])
+
     console.log('projectResources', projectResources)
 
     const Placeholder = useMemo(() => {
@@ -375,6 +440,18 @@ export default function HomeScreen() {
             Sentry.captureException(error)
         }
     }, [registerPlacement, subscriptionStatus.status, getPresentationResult])
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerSearchBarOptions: {
+                placeholder: 'Search resources...',
+                autoCapitalize: 'none',
+                onChangeText: (event: { nativeEvent: { text: string } }) => {
+                    setSearchText(event.nativeEvent.text)
+                },
+            },
+        })
+    }, [navigation])
 
     return (
         <>
@@ -655,7 +732,7 @@ export default function HomeScreen() {
                 contentInsetAdjustmentBehavior="automatic"
                 refreshControl={<RefreshControl onRefresh={projectResourcesQuery.refetch} />}
                 showsVerticalScrollIndicator={false}
-                data={Placeholder ? [] : projectResources}
+                data={Placeholder ? [] : filteredResources}
                 extraData={[minimizedTypes, resourceTypeCounts]}
                 overrideProps={overrideProps}
                 ListEmptyComponent={Placeholder}
