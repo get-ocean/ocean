@@ -17,7 +17,6 @@ import RefreshControl from '@/components/base/RefreshControl'
 import Text from '@/components/base/Text'
 import type { VOLUME_REGIONS } from '@/lib/constants'
 import { queryClient } from '@/lib/query'
-import WidgetKitModule from '@/modules/widgetkit'
 import { usePersistedStore } from '@/store/persisted'
 import { COLORS } from '@/theme/colors'
 import Alert from '@blazejkustra/react-native-alert'
@@ -425,7 +424,6 @@ export default function DropletHomeScreen() {
                                     registerPlacement({
                                         placement: 'TapWidget',
                                         feature: () => {
-                                            WidgetKitModule.setIsSubscribed(true)
                                             Alert.alert(
                                                 'Congrats!',
                                                 'You can now go to your homescreen and search for "Ocean" widgets.'

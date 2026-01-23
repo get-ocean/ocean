@@ -3,7 +3,6 @@ import buildPlaceholder from '@/components/base/Placeholder'
 import RefreshControl from '@/components/base/RefreshControl'
 import Text from '@/components/base/Text'
 import { formatBytes } from '@/lib/format'
-import WidgetKitModule from '@/modules/widgetkit'
 import { usePersistedStore } from '@/store/persisted'
 import { COLORS } from '@/theme/colors'
 import { S3 } from '@aws-sdk/client-s3'
@@ -507,9 +506,6 @@ export default function SpaceBrowseScreen() {
                                     if (subscriptionStatus?.status !== 'ACTIVE' && !__DEV__) {
                                         registerPlacement({
                                             placement: 'BrowseSpace',
-                                            feature: () => {
-                                                WidgetKitModule.setIsSubscribed(true)
-                                            },
                                         }).catch((error) => {
                                             Sentry.captureException(error)
                                             console.error('Error registering BrowseSpace', error)
@@ -701,9 +697,6 @@ export default function SpaceBrowseScreen() {
                                         if (subscriptionStatus?.status !== 'ACTIVE' && !__DEV__) {
                                             registerPlacement({
                                                 placement: 'BrowseSpace',
-                                                feature: () => {
-                                                    WidgetKitModule.setIsSubscribed(true)
-                                                },
                                             }).catch((error) => {
                                                 Sentry.captureException(error)
                                                 console.error(
@@ -770,9 +763,6 @@ export default function SpaceBrowseScreen() {
                                         if (subscriptionStatus?.status !== 'ACTIVE' && !__DEV__) {
                                             registerPlacement({
                                                 placement: 'BrowseSpace',
-                                                feature: () => {
-                                                    WidgetKitModule.setIsSubscribed(true)
-                                                },
                                             }).catch((error) => {
                                                 Sentry.captureException(error)
                                                 console.error(
@@ -816,9 +806,6 @@ export default function SpaceBrowseScreen() {
                                         if (subscriptionStatus?.status !== 'ACTIVE' && !__DEV__) {
                                             registerPlacement({
                                                 placement: 'BrowseSpace',
-                                                feature: () => {
-                                                    WidgetKitModule.setIsSubscribed(true)
-                                                },
                                             }).catch((error) => {
                                                 Sentry.captureException(error)
                                                 console.error(
@@ -881,9 +868,6 @@ export default function SpaceBrowseScreen() {
                                         if (subscriptionStatus?.status !== 'ACTIVE' && !__DEV__) {
                                             registerPlacement({
                                                 placement: 'BrowseSpace',
-                                                feature: () => {
-                                                    WidgetKitModule.setIsSubscribed(true)
-                                                },
                                             }).catch((error) => {
                                                 Sentry.captureException(error)
                                                 console.error(
@@ -938,9 +922,6 @@ export default function SpaceBrowseScreen() {
                                         if (subscriptionStatus?.status !== 'ACTIVE' && !__DEV__) {
                                             registerPlacement({
                                                 placement: 'BrowseSpace',
-                                                feature: () => {
-                                                    WidgetKitModule.setIsSubscribed(true)
-                                                },
                                             }).catch((error) => {
                                                 Sentry.captureException(error)
                                                 console.error(

@@ -4,7 +4,6 @@ import buildPlaceholder from '@/components/base/Placeholder'
 import RefreshControl from '@/components/base/RefreshControl'
 import Text from '@/components/base/Text'
 import { useSearchParams } from '@/lib/hooks'
-import WidgetKitModule from '@/modules/widgetkit'
 import { COLORS } from '@/theme/colors'
 import { Ionicons } from '@expo/vector-icons'
 import * as Sentry from '@sentry/react-native'
@@ -72,7 +71,6 @@ export default function DropletStatsScreen() {
                                     registerPlacement({
                                         placement: 'TapWidget',
                                         feature: () => {
-                                            WidgetKitModule.setIsSubscribed(true)
                                             Alert.alert(
                                                 'Congrats!',
                                                 'You can now go to your homescreen and search for "Ocean" widgets.'

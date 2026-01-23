@@ -19,7 +19,6 @@ import Text from '@/components/base/Text'
 import { DB_CLUSTER_ENGINE_LABELS } from '@/lib/constants'
 import { useFlashlistProps, useWithReview } from '@/lib/hooks'
 import { queryClient } from '@/lib/query'
-import WidgetKitModule from '@/modules/widgetkit'
 import { mmkvStorage } from '@/lib/storage'
 import { usePersistedStore } from '@/store/persisted'
 import { COLORS } from '@/theme/colors'
@@ -411,7 +410,6 @@ export default function HomeScreen() {
                     registerPlacement({
                         placement: 'LifetimeOffer_1',
                         feature: () => {
-                            WidgetKitModule.setIsSubscribed(true)
                             Alert.alert('Congrats!', 'You unlocked lifetime access to Ocean.')
                         },
                     }).catch((error) => {
@@ -557,7 +555,6 @@ export default function HomeScreen() {
 
                                 if (e.nativeEvent.name === 'Add Account') {
                                     if (__DEV__) {
-                                        WidgetKitModule.setIsSubscribed(true)
                                         router.push('/login/')
                                         return
                                     }
@@ -565,7 +562,6 @@ export default function HomeScreen() {
                                     registerPlacement({
                                         placement: 'AddConnection',
                                         feature: () => {
-                                            WidgetKitModule.setIsSubscribed(true)
                                             router.push('/login/')
                                         },
                                     })

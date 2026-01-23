@@ -40,7 +40,7 @@ struct LargeProjectDropletsProvider: AppIntentTimelineProvider {
             async let nowStats = fetchDropletNowStats(connection: project.connection, dropletId: dropletId)
             async let dropletResp = fetchDroplet(connection: project.connection, dropletId: dropletId)
             let (stats, d) = try await (nowStats, dropletResp)
-            let row = DropletRow(id: d.droplet.id, name: d.droplet.name, cpu: stats.cpuPercent, memory: stats.memoryPercent, disk: stats.diskPercent)
+            let row = DropletRow(id: d.droplet.id, name: d.droplet.name, connectionId: project.connection.id, cpu: stats.cpuPercent, memory: stats.memoryPercent, disk: stats.diskPercent)
             dropletRows.append(row)
           } catch {
             continue
@@ -65,6 +65,7 @@ struct LargeProjectDropletsProvider: AppIntentTimelineProvider {
 struct DropletRow {
   let id: String
   let name: String
+  let connectionId: String
   let cpu: Int?
   let memory: Int?
   let disk: Int?
@@ -101,8 +102,7 @@ struct DropletRowView: View {
         }
       }
       Spacer()
-      // Button open app to droplet detail
-      Link(destination: URL(string: getAppDeepLink(dropletId: row.id))!) {
+      Link(destination: URL(string: getAppDeepLink(connectionId: row.connectionId, path: "droplets/\(row.id)/home"))!) {
         Text("OPEN")
           .font(.system(size: 12, weight: .bold))
           .foregroundStyle(Color("neutral000"))
@@ -122,7 +122,7 @@ struct LargeProjectDropletsEntryView: View {
   var body: some View {
     if (!entry.isSubscribed) {
       SubscriptionRequiredView()
-        .widgetURL(URL(string: getAppDeepLink(dropletId: nil)))
+        .widgetURL(URL(string: getAppDeepLink(connectionId: entry.configuration.project?.connection.id, path: "")))
     } else {
       VStack(alignment: .leading, spacing: 12) {
         HStack(spacing: 8) {
@@ -172,7 +172,7 @@ struct LargeProjectDropletsWidget: Widget {
   LargeProjectDropletsWidget()
 } timeline: {
   LargeProjectDropletsEntry(date: .now, configuration: LargeProjectDropletsAppIntentConfiguration(), isSubscribed: true, droplets: [
-    .init(id: "1", name: "Ocean Droplet", cpu: 12, memory: 34, disk: 56)
+    .init(id: "1", name: "Ocean Droplet", connectionId: "1", cpu: 12, memory: 34, disk: 56)
   ])
 }
 

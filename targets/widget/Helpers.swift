@@ -40,10 +40,8 @@ func formatCompactCount(_ value: Int) -> String {
   return "\(sign)\(numberString)\(suffix)"
 }
 
-func getAppDeepLink(dropletId: String?) -> String {
-  guard let dropletId = dropletId else {
-//    helpersLogger.log("[getAppDeepLink]: NO DROPLET ID")
-
+func getAppDeepLink(connectionId: String?, path: String) -> String {
+  guard let connectionId = connectionId else {
     return "ocean://"
   }
   
@@ -51,7 +49,8 @@ func getAppDeepLink(dropletId: String?) -> String {
     let isSubscribed = sharedDefaults.bool(forKey: isSubscribedKey)
     
     if isSubscribed {
-      return "ocean://droplets/\(dropletId)/home"
+      let separator = path.contains("?") ? "&" : "?"
+      return "ocean://\(path)\(separator)_widgetConnectionId=\(connectionId)"
     }
   }
 

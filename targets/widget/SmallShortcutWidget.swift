@@ -51,7 +51,7 @@ struct SmallShortcutEntryView: View {
   var body: some View {
     if (!entry.isSubscribed) {
       SubscriptionRequiredView()
-        .widgetURL(URL(string: getAppDeepLink(dropletId: entry.configuration.droplet?.id)))
+        .widgetURL(URL(string: getAppDeepLink(connectionId: entry.configuration.droplet?.connection.id, path: "droplets/\(entry.configuration.droplet?.id ?? "")/home")))
     } else {
       VStack(alignment: .center, spacing: 10.0) {
         Image("AppIconImage")
@@ -79,7 +79,7 @@ struct SmallShortcutEntryView: View {
         }
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .widgetURL(URL(string: getAppDeepLink(dropletId: entry.configuration.droplet?.id)))
+      .widgetURL(URL(string: getAppDeepLink(connectionId: entry.configuration.droplet?.connection.id, path: "droplets/\(entry.configuration.droplet?.id ?? "")/home")))
     }
   }
 }
