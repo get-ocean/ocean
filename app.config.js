@@ -99,6 +99,34 @@ module.exports = ({ config }) => {
             //         widgets: [],
             //     },
             // ],
+            'expo-font',
+            'expo-web-browser',
+            [
+                'expo-alternate-app-icons',
+                [
+                    {
+                        name: 'Droplet',
+                        ios: './assets/icon-droplet.png',
+                        android: {
+                            foregroundImage: './assets/icon-droplet.png',
+                        },
+                    },
+                    {
+                        name: 'Lines',
+                        ios: './assets/icon-lines.png',
+                        android: {
+                            foregroundImage: './assets/icon-lines.png',
+                        },
+                    },
+                    {
+                        name: 'Symbol',
+                        ios: './assets/icon-symbol.png',
+                        android: {
+                            foregroundImage: './assets/icon-symbol.png',
+                        },
+                    },
+                ],
+            ],
         ],
 
         experiments: {

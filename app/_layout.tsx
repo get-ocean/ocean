@@ -257,6 +257,16 @@ function RootLayout() {
                                     }}
                                 />
 
+                                <Stack.Screen
+                                    name="icons/index"
+                                    options={{
+                                        title: 'App Icon',
+                                        ...commonHeaderStyle,
+                                        ...commonContentStyle,
+                                        autoHideHomeIndicator: true,
+                                    }}
+                                />
+
                                 {/* <Stack.Screen
                             name="apps/[appId]/components/[componentId]"
                             options={{
