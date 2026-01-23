@@ -17,7 +17,7 @@ import buildPlaceholder from '@/components/base/Placeholder'
 import RefreshControl from '@/components/base/RefreshControl'
 import Text from '@/components/base/Text'
 import { DB_CLUSTER_ENGINE_LABELS } from '@/lib/constants'
-import { useFlashlistProps } from '@/lib/hooks'
+import { useFlashlistProps, useWithReview } from '@/lib/hooks'
 import { queryClient } from '@/lib/query'
 import WidgetKitModule from '@/modules/widgetkit'
 import { mmkvStorage } from '@/lib/storage'
@@ -769,6 +769,7 @@ export default function HomeScreen() {
 }
 
 function DatabaseClusterCard({ idOrName }: { idOrName: string }) {
+    const withReview = useWithReview()
     const databaseClusterQuery = useQuery({
         queryKey: ['databaseCluster', idOrName],
         queryFn: async () => fetchDatabaseCluster({ id: idOrName }),
@@ -847,10 +848,10 @@ function DatabaseClusterCard({ idOrName }: { idOrName: string }) {
                 // borderBottomWidth: 1,
                 borderColor: COLORS.hr,
             }}
-            onPress={() => {
+            onPress={withReview(() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid)
-                router.push(`/databases/${idOrName}`)
-            }}
+                router.push(`/databases/${encodeURIComponent(idOrName)}/`)
+            })}
         >
             <ProjectListItem label={data.name} subtitle={subtitleString} endContent={data.region} />
         </TouchableOpacity>
@@ -858,6 +859,7 @@ function DatabaseClusterCard({ idOrName }: { idOrName: string }) {
 }
 
 function VolumeCard({ idOrName }: { idOrName: string }) {
+    const withReview = useWithReview()
     const volumeQuery = useQuery({
         queryKey: ['volume', idOrName],
         queryFn: async () => fetchVolume({ id: idOrName }),
@@ -910,10 +912,10 @@ function VolumeCard({ idOrName }: { idOrName: string }) {
                 borderBottomWidth: 1,
                 borderColor: COLORS.hr,
             }}
-            onPress={() => {
+            onPress={withReview(() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid)
-                router.push(`/volumes/${idOrName}`)
-            }}
+                router.push(`/volumes/${idOrName}/`)
+            })}
         >
             <ProjectListItem
                 label={data.name || idOrName}
@@ -925,6 +927,7 @@ function VolumeCard({ idOrName }: { idOrName: string }) {
 }
 
 function SpaceCard({ idOrName, extraData }: { idOrName: string; extraData: { url: string } }) {
+    const withReview = useWithReview()
     const currentConnection = usePersistedStore((state) => state.currentConnection)
 
     const spaceQuery = useQuery({
@@ -1099,10 +1102,10 @@ function SpaceCard({ idOrName, extraData }: { idOrName: string; extraData: { url
                 // borderBottomWidth: 1,
                 borderColor: COLORS.hr,
             }}
-            onPress={() => {
+            onPress={withReview(() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid)
                 router.push(`/spaces/${encodeURIComponent(extraData.url)}/home`)
-            }}
+            })}
         >
             <ProjectListItem label={idOrName} subtitle={subtitleString} endContent={regionString} />
         </TouchableOpacity>
@@ -1110,6 +1113,7 @@ function SpaceCard({ idOrName, extraData }: { idOrName: string; extraData: { url
 }
 
 function LoadBalancerCard({ idOrName }: { idOrName: string }) {
+    const withReview = useWithReview()
     const loadBalancerQuery = useQuery({
         queryKey: ['loadBalancer', idOrName],
         queryFn: async () => fetchLoadBalancer({ id: idOrName }),
@@ -1174,10 +1178,10 @@ function LoadBalancerCard({ idOrName }: { idOrName: string }) {
                 // borderBottomWidth: 1,
                 borderColor: COLORS.hr,
             }}
-            onPress={() => {
+            onPress={withReview(() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid)
-                router.push(`/loadBalancers/${idOrName}`)
-            }}
+                router.push(`/loadBalancers/${encodeURIComponent(idOrName)}/`)
+            })}
         >
             <ProjectListItem
                 label={data.name || idOrName}
@@ -1189,6 +1193,7 @@ function LoadBalancerCard({ idOrName }: { idOrName: string }) {
 }
 
 function AppCard({ idOrName }: { idOrName: string }) {
+    const withReview = useWithReview()
     const appQuery = useQuery({
         queryKey: ['app', idOrName],
         queryFn: async () => fetchApp({ id: idOrName }),
@@ -1257,10 +1262,10 @@ function AppCard({ idOrName }: { idOrName: string }) {
                 borderTopWidth: 1,
                 borderColor: COLORS.hr,
             }}
-            onPress={() => {
+            onPress={withReview(() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid)
-                router.push(`/apps/${idOrName}/home`)
-            }}
+                router.push(`/apps/${encodeURIComponent(idOrName)}/home/`)
+            })}
         >
             <ProjectListItem
                 label={data.spec.name}
@@ -1272,6 +1277,7 @@ function AppCard({ idOrName }: { idOrName: string }) {
 }
 
 function DomainCard({ idOrName }: { idOrName: string }) {
+    const withReview = useWithReview()
     const domainQuery = useQuery({
         queryKey: ['domain', idOrName],
         queryFn: async () => fetchDomain({ name: idOrName }),
@@ -1327,10 +1333,10 @@ function DomainCard({ idOrName }: { idOrName: string }) {
                 borderTopWidth: 1,
                 borderColor: COLORS.hr,
             }}
-            onPress={() => {
+            onPress={withReview(() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid)
-                router.push(`/domains/${encodeURIComponent(idOrName)}`)
-            }}
+                router.push(`/domains/${encodeURIComponent(idOrName)}/`)
+            })}
         >
             <ProjectListItem label={data.name || idOrName} subtitle={recordTypeCountsString} />
         </TouchableOpacity>
@@ -1338,6 +1344,7 @@ function DomainCard({ idOrName }: { idOrName: string }) {
 }
 
 function DropletCard({ idOrName }: { idOrName: string }) {
+    const withReview = useWithReview()
     const dropletQuery = useQuery({
         queryKey: ['droplets', idOrName],
         queryFn: async () => fetchDroplet({ id: idOrName }),
@@ -1409,10 +1416,10 @@ function DropletCard({ idOrName }: { idOrName: string }) {
                 // borderBottomWidth: 1,
                 borderColor: COLORS.hr,
             }}
-            onPress={() => {
+            onPress={withReview(() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid)
-                router.push(`/droplets/${idOrName}/home`)
-            }}
+                router.push(`/droplets/${encodeURIComponent(idOrName)}/home/`)
+            })}
         >
             <ProjectListItem
                 label={data.name}

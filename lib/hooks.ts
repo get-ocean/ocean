@@ -1,5 +1,8 @@
+import { usePersistedStore } from '@/store/persisted'
 import { useFocusEffect } from 'expo-router'
 import { useGlobalSearchParams } from 'expo-router'
+import * as StoreReview from 'expo-store-review'
+import ms from 'ms'
 import { useCallback, useMemo, useState } from 'react'
 import { Platform } from 'react-native'
 
@@ -42,4 +45,37 @@ export function useFlashlistProps(placeholder?: React.ReactNode) {
               }
             : undefined,
     }
+}
+
+export function useWithReview() {
+    const countToReviewPrompt = usePersistedStore((state) => state.countToReviewPrompt)
+    const setCountToReviewPrompt = usePersistedStore((state) => state.setCountToReviewPrompt)
+    const lastShownReviewPrompt = usePersistedStore((state) => state.lastShownReviewPrompt)
+    const setLastShownReviewPrompt = usePersistedStore((state) => state.setLastShownReviewPrompt)
+
+    const withReview = useCallback(
+        <T extends (...args: any[]) => any>(fn: T) => {
+            return ((...args: Parameters<T>) => {
+                fn(...args)
+
+                if (countToReviewPrompt === 0) {
+                    if (!lastShownReviewPrompt || lastShownReviewPrompt < Date.now() - ms('1d')) {
+                        setLastShownReviewPrompt(Date.now())
+                        setCountToReviewPrompt(12)
+                        StoreReview.requestReview()
+                    }
+                } else {
+                    setCountToReviewPrompt(countToReviewPrompt - 1)
+                }
+            }) as T
+        },
+        [
+            countToReviewPrompt,
+            setCountToReviewPrompt,
+            lastShownReviewPrompt,
+            setLastShownReviewPrompt,
+        ]
+    )
+
+    return withReview
 }
