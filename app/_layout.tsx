@@ -92,7 +92,10 @@ function RootLayout() {
                             persistOptions={{
                                 persister: mmkvPersister,
                                 dehydrateOptions: {
-                                    shouldDehydrateQuery: (query) => query.state.data !== undefined,
+                                    shouldDehydrateQuery: (query) =>
+                                        query.state.status !== 'pending' &&
+                                        query.state.status !== 'error' &&
+                                        query.state.data !== undefined,
                                 },
                             }}
                         >
@@ -138,7 +141,7 @@ function RootLayout() {
                                     name="home/index"
                                     options={{
                                         title: 'Home',
-                                        headerShown: false,
+                                        headerShown: Platform.OS === 'android',
                                         ...commonHeaderStyle,
                                         ...commonContentStyle,
                                         autoHideHomeIndicator: true,

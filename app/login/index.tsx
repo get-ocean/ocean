@@ -6,6 +6,7 @@ import { queryClient } from '@/lib/query'
 import { usePersistedStore } from '@/store/persisted'
 import { COLORS } from '@/theme/colors'
 import { Ionicons } from '@expo/vector-icons'
+import { useMutation } from '@tanstack/react-query'
 import { router, useNavigation } from 'expo-router'
 import { usePlacement } from 'expo-superwall'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -21,13 +22,8 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
-import Animated, {
-    interpolate,
-    useAnimatedKeyboard,
-    useAnimatedStyle,
-    withTiming,
-} from 'react-native-reanimated'
+import { KeyboardAwareScrollView, useAnimatedKeyboard } from 'react-native-keyboard-controller'
+import Animated, { interpolate, useAnimatedStyle, withTiming } from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function LoginScreen() {
@@ -40,17 +36,13 @@ export default function LoginScreen() {
 
     const apiTokenRef = useRef<string>('')
 
-    const [isLoading, setIsLoading] = useState(false)
     const [isModal, setIsModal] = useState(false)
 
     const showCloseButton = useMemo(() => {
         return Platform.OS === 'android' && isModal
     }, [isModal])
 
-    const keyboard = useAnimatedKeyboard({
-        isStatusBarTranslucentAndroid: true,
-        isNavigationBarTranslucentAndroid: true,
-    })
+    const keyboard = useAnimatedKeyboard()
 
     const helpBoxAnimatedStyles = useAnimatedStyle(() => {
         const isKeyboardVisible = interpolate(keyboard.height.value, [0, 1], [0, 1], 'clamp')
@@ -61,35 +53,17 @@ export default function LoginScreen() {
         }
     })
 
-    const validateToken = useCallback(async (token: string) => {
-        console.log('[validateToken]  token', token)
-        try {
-            const response = await checkLoginCredentials(token)
-            return response
-        } catch {
-            Alert.alert('Invalid token', 'Please enter a valid Digital Ocean API token')
-        }
-    }, [])
+    const loginMutation = useMutation({
+        mutationFn: async (token: string) => {
+            console.log('[loginMutation] token', token)
 
-    const handleLogin = useCallback(async () => {
-        const token = apiTokenRef.current.trim() || ''
-        if (!token) {
-            Alert.alert('Error', 'Please enter an API token')
-            return
-        }
-
-        setIsLoading(true)
-
-        try {
-            const user = await validateToken(token)
+            const user = await checkLoginCredentials(token)
             if (!user || !user.uuid || !user.email) {
-                Alert.alert('Error', 'Invalid token')
-                return
+                throw new Error('Invalid token')
             }
 
             if (connections.find((c) => c.id === user.uuid)) {
-                Alert.alert('Error', 'You are already connected to this account')
-                return
+                throw new Error('You are already connected to this account')
             }
 
             addConnection({
@@ -102,33 +76,16 @@ export default function LoginScreen() {
 
             const spacesAccessKeyName = `ocean-${Date.now()}`
 
-            let spacesAccessKey: { access_key: string; secret_key: string } | null = null
-
-            try {
-                const createdKey = await createSpacesAccessKey({
-                    name: spacesAccessKeyName,
-                    grants: [{ bucket: '', permission: 'fullaccess' }],
-                    connectionId: user.uuid,
-                })
-                if (!createdKey || !createdKey.access_key || !createdKey.secret_key) {
-                    throw new Error('Could not create spaces access key')
-                }
-                spacesAccessKey = {
-                    access_key: createdKey.access_key,
-                    secret_key: createdKey.secret_key,
-                }
-            } catch {
-                Alert.alert(
-                    'Error',
+            const createdKey = await createSpacesAccessKey({
+                name: spacesAccessKeyName,
+                grants: [{ bucket: '', permission: 'fullaccess' }],
+                connectionId: user.uuid,
+            })
+            if (!createdKey || !createdKey.access_key || !createdKey.secret_key) {
+                throw new Error(
                     'Could not create spaces access key, please use an API token with "Full Access" permissions.'
                 )
             }
-
-            if (!spacesAccessKey) {
-                return
-            }
-
-            // failed to create, you will not be able to browse spaces
 
             usePersistedStore.setState((prev) => ({
                 ...prev,
@@ -141,8 +98,8 @@ export default function LoginScreen() {
                         currentProjectId: null,
                         spacesAccessKey: {
                             name: spacesAccessKeyName,
-                            id: spacesAccessKey.access_key,
-                            secret: spacesAccessKey.secret_key,
+                            id: createdKey.access_key!,
+                            secret: createdKey.secret_key!,
                         },
                     },
                 ],
@@ -166,14 +123,25 @@ export default function LoginScreen() {
                 queryFn: async () => fetchProjectList({ connectionId: user.uuid }),
             })
 
+            return user
+        },
+        onSuccess: () => {
             router.replace('/home')
-        } catch (error) {
-            console.error('[handleLogin] error', error)
-            Alert.alert('Error', 'Could not connect to Digital Ocean')
-        } finally {
-            setIsLoading(false)
+        },
+        onError: (error) => {
+            console.error('[loginMutation] error', error)
+            Alert.alert('Error', error.message || 'Could not connect to Digital Ocean')
+        },
+    })
+
+    const handleLogin = () => {
+        const token = apiTokenRef.current.trim() || ''
+        if (!token) {
+            Alert.alert('Error', 'Please enter an API token')
+            return
         }
-    }, [validateToken, switchConnection, addConnection, connections, registerPlacement])
+        loginMutation.mutate(token)
+    }
 
     const openApiDocs = useCallback(() => {
         try {
@@ -208,7 +176,7 @@ export default function LoginScreen() {
                     }}
                     contentContainerStyle={{
                         flexGrow: 1,
-                        paddingTop: 120,
+                        paddingTop: isModal ? 60 : 120,
                         paddingBottom: 280,
                     }}
                     showsVerticalScrollIndicator={false}
@@ -305,9 +273,9 @@ export default function LoginScreen() {
                             />
                             <View style={{ marginTop: 20 }}>
                                 <Button
-                                    title={isLoading ? 'Connecting...' : 'Connect'}
+                                    title={loginMutation.isPending ? 'Connecting...' : 'Connect'}
                                     onPress={handleLogin}
-                                    disabled={isLoading}
+                                    disabled={loginMutation.isPending}
                                     color={COLORS.primary}
                                 />
                             </View>
