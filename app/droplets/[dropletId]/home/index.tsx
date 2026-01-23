@@ -241,7 +241,7 @@ export default function DropletHomeScreen() {
                                   if (router.canGoBack()) {
                                       router.back()
                                   } else {
-                                      router.replace('/home')
+                                      router.replace('/home/')
                                   }
                                   return
                               }

@@ -322,7 +322,9 @@ export default function VolumeScreen() {
                                             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid)
 
                                             if (e.nativeEvent.name === 'View Droplet') {
-                                                router.push(`/droplets/${attachedDroplet.id}/home`)
+                                                router.push(
+                                                    `/droplets/${encodeURIComponent(attachedDroplet.id)}/home/`
+                                                )
                                                 return
                                             }
 

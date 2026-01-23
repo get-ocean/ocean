@@ -461,7 +461,7 @@ export default function HomeScreen() {
                                                     if (connections.length === 1) {
                                                         mmkvStorage.clearAll()
                                                         router.dismissAll()
-                                                        router.replace('/login')
+                                                        router.replace('/login/')
                                                         queryClient.clear()
                                                         return
                                                     }
@@ -481,7 +481,7 @@ export default function HomeScreen() {
                                 if (e.nativeEvent.name === 'Add Account') {
                                     if (__DEV__) {
                                         WidgetKitModule.setIsSubscribed(true)
-                                        router.push('/login')
+                                        router.push('/login/')
                                         return
                                     }
 
@@ -489,7 +489,7 @@ export default function HomeScreen() {
                                         placement: 'AddConnection',
                                         feature: () => {
                                             WidgetKitModule.setIsSubscribed(true)
-                                            router.push('/login')
+                                            router.push('/login/')
                                         },
                                     })
 
