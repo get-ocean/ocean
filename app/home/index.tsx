@@ -19,8 +19,8 @@ import Text from '@/components/base/Text'
 import { DB_CLUSTER_ENGINE_LABELS } from '@/lib/constants'
 import { useFlashlistProps } from '@/lib/hooks'
 import { queryClient } from '@/lib/query'
-import { storage } from '@/lib/storage'
 import WidgetKitModule from '@/modules/widgetkit'
+import { mmkvStorage } from '@/lib/storage'
 import { usePersistedStore } from '@/store/persisted'
 import { COLORS } from '@/theme/colors'
 import { S3 } from '@aws-sdk/client-s3'
@@ -459,7 +459,7 @@ export default function HomeScreen() {
 
                                                     // if we had 1 connection before, we will have none
                                                     if (connections.length === 1) {
-                                                        storage.clearAll()
+                                                        mmkvStorage.clearAll()
                                                         router.dismissAll()
                                                         router.replace('/login')
                                                         queryClient.clear()
