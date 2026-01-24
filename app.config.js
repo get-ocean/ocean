@@ -42,6 +42,7 @@ module.exports = ({ config }) => {
             adaptiveIcon: {
                 foregroundImage: './assets/icon-android.png',
             },
+            googleServicesFile: './google-services.json',
             playStoreUrl: process.env.EXPO_PUBLIC_ANDROID_STORE_URL,
             predictiveBackGestureEnabled: false,
         },
@@ -51,10 +52,9 @@ module.exports = ({ config }) => {
                 'expo-build-properties',
                 {
                     android: {
-                        minSdkVersion: 24,
-                        targetSdkVersion: 35,
-                        // enableMinifyInReleaseBuilds: true,
-                        // enableShrinkResourcesInReleaseBuilds: true,
+                        minSdkVersion: 26,
+                        enableMinifyInReleaseBuilds: true,
+                        enableShrinkResourcesInReleaseBuilds: true,
                         // useDayNightTheme: true
                     },
                 },
@@ -82,23 +82,52 @@ module.exports = ({ config }) => {
                 },
             ],
             '@bacons/apple-targets',
-            // [
-            //     './plugins/withAndroidWidget',
-            //     {
-            //         src: './targets/widget-android',
-            //         versions: {
-            //             glance: '1.1.1',
-            //             kotlinExtension: '2.0.0',
-            //             gson: '2.13.2',
-            //             activityCompose: '1.11.0',
-            //             composeUi: '1.9.3',
-            //             material3: '1.4.0',
-            //             workRuntime: '2.10.5',
-            //             chart: '3.1.0',
-            //         },
-            //         widgets: [],
-            //     },
-            // ],
+            [
+                './plugins/withAndroidWidget',
+                {
+                    src: './targets/widget-android',
+                    versions: {
+                        glance: '1.1.1',
+                        kotlinExtension: '2.0.0',
+                        gson: '2.11.0',
+                        activityCompose: '1.9.2',
+                        composeUi: '1.7.3',
+                        material3: '1.3.1',
+                        workRuntime: '2.9.1',
+                        chart: '3.1.0',
+                    },
+                    widgets: [
+                        {
+                            receiverName: 'MediumDropletStatsWidgetReceiver',
+                            configurationActivity: 'MediumDropletStatsConfigurationActivity',
+                            title: 'Droplet Stats',
+                            description: 'CPU / Memory / Disk of your droplet.',
+                            resource: '@xml/medium_droplet_stats_widget',
+                        },
+                        {
+                            receiverName: 'MediumDropletBandwidthWidgetReceiver',
+                            configurationActivity: 'MediumDropletBandwidthConfigurationActivity',
+                            title: 'Droplet Bandwidth',
+                            description: 'Inbound/Outbound metrics for your droplet.',
+                            resource: '@xml/medium_droplet_bandwidth_widget',
+                        },
+                        {
+                            receiverName: 'LargeProjectDropletsWidgetReceiver',
+                            configurationActivity: 'LargeProjectDropletsConfigurationActivity',
+                            title: 'Project Droplets',
+                            description: 'List droplets in a project with current stats.',
+                            resource: '@xml/large_project_droplets_widget',
+                        },
+                        {
+                            receiverName: 'SmallShortcutWidgetReceiver',
+                            configurationActivity: 'SmallShortcutConfigurationActivity',
+                            title: 'Droplet Shortcut',
+                            description: 'Quick-launch shortcut to open a specific droplet.',
+                            resource: '@xml/small_shortcut_widget',
+                        },
+                    ],
+                },
+            ],
             'expo-font',
             'expo-web-browser',
             [
