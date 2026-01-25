@@ -88,16 +88,11 @@ fun MediumDropletStatsContent() {
     
     val context = LocalContext.current
     val deepLink = if (droplet != null) {
-        val base = "ocean://droplets/${droplet.id}/home"
-        if (droplet.connectionId.isNotEmpty()) {
-            "$base?_widgetConnectionId=${droplet.connectionId}"
-        } else {
-            base
-        }
+        getAppDeepLink(context, droplet.connectionId, "droplets/${droplet.id}/home")
     } else {
-        "ocean://"
+        getAppDeepLink(context, null, "")
     }
-    
+
     Box(
         contentAlignment = Alignment.TopStart,
         modifier = GlanceModifier
@@ -198,15 +193,3 @@ private fun extractDropletName(dropletJson: String?): String? {
     return dropletJson.substring(start, end)
 }
 
-private fun buildDeepLink(context: Context, dropletId: String?): String {
-    if (dropletId.isNullOrEmpty()) {
-        return "ocean://"
-    }
-    val prefs = context.getSharedPreferences("group.com.digitalocean.mobile", Context.MODE_PRIVATE)
-    val isSubscribed = prefs.getBoolean("isSubscribed", false)
-    return if (isSubscribed) {
-        "ocean://droplets/$dropletId/home"
-    } else {
-        "ocean://?showPaywall=1"
-    }
-}

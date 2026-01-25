@@ -177,12 +177,7 @@ private fun DropletRowView(droplet: DropletRow, context: Context) {
                     .cornerRadius(16.dp)
                     .padding(horizontal = 12.dp, vertical = 6.dp)
                     .clickable {
-                        val base = "ocean://droplets/${droplet.id}/home"
-                        val deepLink = if (droplet.connectionId != null && droplet.connectionId.isNotEmpty()) {
-                            "$base?_widgetConnectionId=${droplet.connectionId}"
-                        } else {
-                            base
-                        }
+                        val deepLink = getAppDeepLink(context, droplet.connectionId, "droplets/${droplet.id}/home")
                         val intent = Intent(
                             Intent.ACTION_VIEW,
                             Uri.parse(deepLink)
@@ -252,10 +247,5 @@ private fun extractProjectName(projectJson: String?): String? {
     return projectJson.substring(start, end)
 }
 
-private fun buildDeepLinkProject(context: Context): String {
-    val prefs = context.getSharedPreferences("group.com.digitalocean.mobile", Context.MODE_PRIVATE)
-    val isSubscribed = prefs.getBoolean("isSubscribed", false)
-    return if (isSubscribed) "ocean://" else "ocean://?showPaywall=1"
-}
 
 

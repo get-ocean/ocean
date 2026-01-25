@@ -42,7 +42,6 @@ module.exports = ({ config }) => {
             adaptiveIcon: {
                 foregroundImage: './assets/icon-android.png',
             },
-            googleServicesFile: './google-services.json',
             playStoreUrl: process.env.EXPO_PUBLIC_ANDROID_STORE_URL,
             predictiveBackGestureEnabled: false,
         },
@@ -52,9 +51,10 @@ module.exports = ({ config }) => {
                 'expo-build-properties',
                 {
                     android: {
-                        minSdkVersion: 26,
-                        enableMinifyInReleaseBuilds: true,
-                        enableShrinkResourcesInReleaseBuilds: true,
+                        minSdkVersion: 24,
+                        targetSdkVersion: 35,
+                        // enableMinifyInReleaseBuilds: true,
+                        // enableShrinkResourcesInReleaseBuilds: true,
                         // useDayNightTheme: true
                     },
                 },

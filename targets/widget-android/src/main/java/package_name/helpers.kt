@@ -26,8 +26,11 @@ fun formatCompactCount(value: Int): String {
     return "$sign$numberString$suffix"
 }
 
-fun getAppDeepLink(context: Context, dropletId: String?): String {
-    if (dropletId == null) {
+/**
+ * Generate deep link to the app
+ */
+fun getAppDeepLink(context: Context, connectionId: String?, path: String): String {
+    if (connectionId == null) {
         return "ocean://"
     }
 
@@ -35,7 +38,8 @@ fun getAppDeepLink(context: Context, dropletId: String?): String {
     val isSubscribed = prefs.getBoolean(IS_SUBSCRIBED_KEY, false)
 
     return if (isSubscribed) {
-        "ocean://droplets/$dropletId/home"
+        val separator = if (path.contains("?")) "&" else "?"
+        "ocean://$path${separator}_widgetConnectionId=$connectionId"
     } else {
         "ocean://?showPaywall=1"
     }

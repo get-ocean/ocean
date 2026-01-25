@@ -83,15 +83,10 @@ fun SmallShortcutContent() {
     }
     
     val context = LocalContext.current
-    val deepLink = if (droplet?.id != null) {
-        val base = "ocean://droplets/${droplet.id}/home"
-        if (droplet.connectionId.isNotEmpty()) {
-            "$base?_widgetConnectionId=${droplet.connectionId}"
-        } else {
-            base
-        }
+    val deepLink = if (droplet != null) {
+        getAppDeepLink(context, droplet.connectionId, "droplets/${droplet.id}/home")
     } else {
-        "ocean://"
+        getAppDeepLink(context, null, "")
     }
     
     Box(
