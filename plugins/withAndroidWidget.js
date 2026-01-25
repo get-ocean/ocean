@@ -19,7 +19,7 @@ const withModifiedAppBuildGradle = (config, opts) =>
     implementation("androidx.compose.ui:ui:${opts.versions.composeUi}")
     implementation("androidx.compose.material3:material3:${opts.versions.material3}")
     implementation("androidx.work:work-runtime:${opts.versions.workRuntime}")
-    implementation("com.github.PhilJay:MPAndroidChart:v${opts.versions.chart}")
+    implementation("com.github.PhilJay:MPAndroidChart:v${opts.versions.chart}") //! NOT USED
     `
 
         const gradleAndroidConfig = `
