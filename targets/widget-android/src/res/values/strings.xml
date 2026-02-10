@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="small_shortcut_widget_description">Quickly open your droplet</string>
+    <string name="medium_firewall_widget_description">Peek the firewall metrics for your site</string>
+    <string name="medium_functions_widget_description">Peek the Functions metrics for your site</string>
+    <string name="widget_loading">Loading…</string>
+    <string name="medium_stats_widget_description">CPU / Memory / Disk of your droplet</string>
+    <string name="medium_bandwidth_widget_description">Inbound/Outbound metrics for your droplet</string>
+    <string name="large_project_widget_description">List droplets in a project with current stats</string>
+</resources>
+
