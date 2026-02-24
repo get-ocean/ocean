@@ -15,7 +15,17 @@ if (process.argv.some((arg) => arg.includes('android'))) {
         resolverMainFields: ['react-native', 'browser', 'main'],
     }
 
-    config.resolver.unstable_enablePackageExports = false
+    // not needed, breaks quick actions
+    // config.resolver.unstable_enablePackageExports = false
+}
+
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+    if (moduleName === 'crypto') {
+        // when importing crypto, resolve to react-native-quick-crypto
+        return context.resolveRequest(context, 'react-native-quick-crypto', platform)
+    }
+    // otherwise chain to the standard Metro resolver.
+    return context.resolveRequest(context, moduleName, platform)
 }
 
 module.exports = wrapWithReanimatedMetroConfig(config)

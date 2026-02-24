@@ -44,6 +44,10 @@ module.exports = ({ config }) => {
             },
             playStoreUrl: process.env.EXPO_PUBLIC_ANDROID_STORE_URL,
             predictiveBackGestureEnabled: false,
+            blockedPermissions: [
+                'android.permission.READ_MEDIA_IMAGES',
+                'android.permission.READ_MEDIA_VIDEO',
+            ],
         },
 
         plugins: [
@@ -79,9 +83,18 @@ module.exports = ({ config }) => {
                     url: 'https://sentry.io/',
                     project: process.env.EXPO_PUBLIC_SENTRY_PROJECT,
                     organization: process.env.EXPO_PUBLIC_SENTRY_ORG,
+                    experimental_android: {
+                        enableAndroidGradlePlugin: true,
+                        autoUploadProguardMapping: true,
+                        includeProguardMapping: true,
+                        dexguardEnabled: true,
+                        uploadNativeSymbols: true,
+                        autoUploadNativeSymbols: true,
+                        includeNativeSources: true,
+                        includeSourceContext: true,
+                    },
                 },
             ],
-            '@bacons/apple-targets',
             [
                 './plugins/withAndroidWidget',
                 {
@@ -128,8 +141,13 @@ module.exports = ({ config }) => {
                     ],
                 },
             ],
-            'expo-font',
-            'expo-web-browser',
+            './plugins/withHotUpdaterAndroidFix',
+            [
+                '@hot-updater/react-native',
+                {
+                    channel: 'production',
+                },
+            ],
             [
                 'expo-alternate-app-icons',
                 [
@@ -156,6 +174,24 @@ module.exports = ({ config }) => {
                     },
                 ],
             ],
+            '@bacons/apple-targets',
+            'expo-quick-actions',
+            'expo-font',
+            'expo-web-browser',
+            'expo-asset',
+            'expo-image',
+            'expo-video',
+            'expo-sharing',
+            [
+                'expo-audio',
+                {
+                    microphonePermission: false,
+                    recordAudioAndroid: false,
+                    enableBackgroundPlayback: false,
+                    enableBackgroundRecording: false,
+                },
+            ],
+            'expo-image-picker',
         ],
 
         experiments: {

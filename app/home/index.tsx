@@ -426,7 +426,7 @@ export default function HomeScreen() {
                         id: '0',
                         title:
                             Platform.OS === 'android'
-                                ? "Don't delete me ): Tap here!"
+                                ? 'Tap here for 50% off!'
                                 : "Don't delete me ):",
                         subtitle: "Here's 50% off for life!",
                         icon: 'love',
@@ -536,7 +536,7 @@ export default function HomeScreen() {
                                                     if (connections.length === 1) {
                                                         mmkvStorage.clearAll()
                                                         router.dismissAll()
-                                                        router.replace('/login/')
+                                                        router.replace('/login')
                                                         queryClient.clear()
                                                         return
                                                     }
@@ -555,14 +555,14 @@ export default function HomeScreen() {
 
                                 if (e.nativeEvent.name === 'Add Account') {
                                     if (__DEV__) {
-                                        router.push('/login/')
+                                        router.push('/login')
                                         return
                                     }
 
                                     registerPlacement({
                                         placement: 'AddConnection',
                                         feature: () => {
-                                            router.push('/login/')
+                                            router.push('/login')
                                         },
                                     })
 
@@ -648,14 +648,14 @@ export default function HomeScreen() {
 
                                 if (e.nativeEvent.name === 'Icons') {
                                     if (__DEV__) {
-                                        router.push('/icons/')
+                                        router.push('/icons')
                                         return
                                     }
 
                                     registerPlacement({
                                         placement: 'AppIcons',
                                         feature: () => {
-                                            router.push('/icons/')
+                                            router.push('/icons')
                                         },
                                     })
                                     return
@@ -1337,7 +1337,7 @@ function AppCard({ idOrName }: { idOrName: string }) {
             }}
             onPress={withReview(() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid)
-                router.push(`/apps/${encodeURIComponent(idOrName)}/home/`)
+                router.push(`/apps/${encodeURIComponent(idOrName)}/home`)
             })}
         >
             <ProjectListItem
@@ -1491,7 +1491,7 @@ function DropletCard({ idOrName }: { idOrName: string }) {
             }}
             onPress={withReview(() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid)
-                router.push(`/droplets/${encodeURIComponent(idOrName)}/home/`)
+                router.push(`/droplets/${encodeURIComponent(idOrName)}/home`)
             })}
         >
             <ProjectListItem

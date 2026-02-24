@@ -1,4 +1,5 @@
 import 'expo-router/entry'
+import './lib/prebundle'
 import * as SplashScreen from 'expo-splash-screen'
 import { setBackgroundColorAsync } from 'expo-system-ui'
 import { TextInput } from 'react-native'
@@ -16,4 +17,8 @@ SplashScreen.setOptions({
     fade: true,
 })
 
-setBackgroundColorAsync('#12181F') // setting it in app.json does not seem to have an effect
+try {
+    setBackgroundColorAsync('#12181F') // setting it in app.json does not seem to have an effect
+} catch (error) {
+    console.error(error)
+}

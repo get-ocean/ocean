@@ -46,3 +46,5 @@ modules/widgetkit/android/build
 google-services.json
 *.apk
 *.aab
+.hot-updater/output
+keys/
