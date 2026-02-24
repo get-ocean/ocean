@@ -1,9 +1,9 @@
-package com.digitalocean.mobile
+package com.digitalocean.ocean
 
 import com.google.gson.annotations.SerializedName
 
 // App Group Configuration
-const val APP_GROUP_NAME = "group.com.digitalocean.mobile"
+const val APP_GROUP_NAME = "group.com.digitalocean.ocean"
 const val CONNECTIONS_KEY = "connections"
 const val IS_SUBSCRIBED_KEY = "isSubscribed"
 const val WIDGET_STATE_KEY = "ocean::widgetState"

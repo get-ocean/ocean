@@ -1,4 +1,4 @@
-package com.digitalocean.mobile
+package com.digitalocean.ocean
 
 /**
  * DigitalOcean API helpers for widgets

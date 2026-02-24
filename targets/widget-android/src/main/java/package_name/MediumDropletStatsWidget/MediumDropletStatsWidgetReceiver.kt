@@ -1,4 +1,4 @@
-package com.digitalocean.mobile
+package com.digitalocean.ocean
 
 import android.content.Context
 import android.content.Intent
@@ -20,7 +20,7 @@ class MediumDropletStatsWidgetReceiver : GlanceAppWidgetReceiver() {
 
     companion object {
         // SharedPreferences (mirrors iOS app group + keys)
-        private const val APP_GROUP_NAME = "group.com.digitalocean.mobile"
+        private const val APP_GROUP_NAME = "group.com.digitalocean.ocean"
         private const val IS_SUBSCRIBED_KEY = "isSubscribed"
 
         // Glance preferences keys

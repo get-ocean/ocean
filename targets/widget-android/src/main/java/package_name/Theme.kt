@@ -1,4 +1,4 @@
-package com.digitalocean.mobile
+package com.digitalocean.ocean
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
@@ -13,7 +13,7 @@ import androidx.glance.GlanceComposable
 import androidx.glance.GlanceTheme
 import androidx.glance.material3.ColorProviders
 import androidx.glance.unit.ColorProvider
-import com.digitalocean.mobile.R
+import com.digitalocean.ocean.R
 
 @Composable
 private fun oceanLightColorPalette() = lightColorScheme(

@@ -1,4 +1,4 @@
-package com.digitalocean.mobile
+package com.digitalocean.ocean
 
 import android.content.Context
 import android.content.Intent
@@ -32,7 +32,7 @@ import androidx.glance.text.TextStyle
 import androidx.glance.currentState
 import androidx.datastore.preferences.core.Preferences
 import androidx.glance.unit.ColorProvider
-import com.digitalocean.mobile.R
+import com.digitalocean.ocean.R
 import com.google.gson.Gson
 
 class SmallShortcutWidget : GlanceAppWidget() {

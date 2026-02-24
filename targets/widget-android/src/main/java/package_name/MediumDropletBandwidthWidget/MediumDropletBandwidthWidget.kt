@@ -1,4 +1,4 @@
-package com.digitalocean.mobile
+package com.digitalocean.ocean
 
 import android.content.Context
 import android.content.Intent
@@ -34,7 +34,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.glance.unit.ColorProvider
 import androidx.glance.Image
 import androidx.glance.ImageProvider
-import com.digitalocean.mobile.R
+import com.digitalocean.ocean.R
 import com.google.gson.Gson
 
 class MediumDropletBandwidthWidget : GlanceAppWidget() {
@@ -152,6 +152,7 @@ fun MediumDropletBandwidthContent() {
             }
         }
     }
+}
 
 @Composable
 private fun BandColWithIcon(label: String, valueBytes: Int?, iconRes: Int, colorValue: Color) {

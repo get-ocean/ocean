@@ -1,4 +1,4 @@
-package com.digitalocean.mobile
+package com.digitalocean.ocean
 
 import android.appwidget.AppWidgetManager
 import android.content.Context

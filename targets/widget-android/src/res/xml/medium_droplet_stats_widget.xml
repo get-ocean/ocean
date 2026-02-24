@@ -9,7 +9,7 @@
     android:updatePeriodMillis="900000"
     android:description="@string/medium_stats_widget_description"
     android:widgetCategory="home_screen"
-    android:configure="com.digitalocean.mobile.MediumDropletStatsConfigurationActivity"
+    android:configure="com.digitalocean.ocean.MediumDropletStatsConfigurationActivity"
     android:widgetFeatures="reconfigurable" />
 
 

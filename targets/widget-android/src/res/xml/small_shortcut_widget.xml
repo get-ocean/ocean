@@ -9,6 +9,6 @@
     android:updatePeriodMillis="900000"
     android:description="@string/small_shortcut_widget_description"
     android:widgetCategory="home_screen"
-    android:configure="com.digitalocean.mobile.SmallShortcutConfigurationActivity"
+    android:configure="com.digitalocean.ocean.SmallShortcutConfigurationActivity"
     android:widgetFeatures="reconfigurable" />
 

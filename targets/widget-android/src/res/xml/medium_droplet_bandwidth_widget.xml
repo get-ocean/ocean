@@ -9,7 +9,7 @@
     android:updatePeriodMillis="900000"
     android:description="@string/medium_bandwidth_widget_description"
     android:widgetCategory="home_screen"
-    android:configure="com.digitalocean.mobile.MediumDropletBandwidthConfigurationActivity"
+    android:configure="com.digitalocean.ocean.MediumDropletBandwidthConfigurationActivity"
     android:widgetFeatures="reconfigurable" />
 
 

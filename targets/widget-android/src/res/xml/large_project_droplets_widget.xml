@@ -9,7 +9,7 @@
     android:updatePeriodMillis="900000"
     android:description="@string/large_project_widget_description"
     android:widgetCategory="home_screen"
-    android:configure="com.digitalocean.mobile.LargeProjectDropletsConfigurationActivity"
+    android:configure="com.digitalocean.ocean.LargeProjectDropletsConfigurationActivity"
     android:widgetFeatures="reconfigurable" />
 
 

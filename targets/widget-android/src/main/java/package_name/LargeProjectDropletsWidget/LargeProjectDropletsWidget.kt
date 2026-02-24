@@ -1,4 +1,4 @@
-package com.digitalocean.mobile
+package com.digitalocean.ocean
 
 import android.content.Context
 import android.content.Intent
@@ -33,7 +33,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.glance.unit.ColorProvider
 import androidx.glance.Image
 import androidx.glance.ImageProvider
-import com.digitalocean.mobile.R
+import com.digitalocean.ocean.R
 
 class LargeProjectDropletsWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {

@@ -1,4 +1,4 @@
-package com.digitalocean.mobile
+package com.digitalocean.ocean
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
@@ -55,7 +55,7 @@ class SmallShortcutConfigurationActivity : ComponentActivity() {
                 val scope = rememberCoroutineScope()
                 
                 LaunchedEffect(Unit) {
-                    val APP_GROUP_NAME = "group.com.digitalocean.mobile"
+                    val APP_GROUP_NAME = "group.com.digitalocean.ocean"
                     val CONNECTIONS_KEY = "connections"
                     val IS_SUBSCRIBED_KEY = "isSubscribed"
 
@@ -176,7 +176,8 @@ private suspend fun fetchDropletsFromConnections(connections: List<Connection>):
                             allDroplets.add(
                                 DropletListItem(
                                     id = droplet.id,
-                                    name = droplet.name
+                                    name = droplet.name,
+                                    connectionId = connection.id ?: ""
                                 )
                             )
                         } catch (e: Exception) {

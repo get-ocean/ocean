@@ -1,4 +1,4 @@
-package com.digitalocean.mobile
+package com.digitalocean.ocean
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
@@ -74,7 +74,7 @@ class MediumDropletStatsConfigurationActivity : ComponentActivity() {
                 var error by remember { mutableStateOf<String?>(null) }
 
                 LaunchedEffect(Unit) {
-                    val APP_GROUP_NAME = "group.com.digitalocean.mobile"
+                    val APP_GROUP_NAME = "group.com.digitalocean.ocean"
                     val CONNECTIONS_KEY = "connections"
 
                     // First, try to read connections immediately
@@ -175,7 +175,7 @@ class MediumDropletStatsConfigurationActivity : ComponentActivity() {
                                     
                                     // Fetch droplets from project and get first droplet's stats
                                     try {
-                                        val sharedPrefs = applicationContext.getSharedPreferences("group.com.digitalocean.mobile", Context.MODE_PRIVATE)
+                                        val sharedPrefs = applicationContext.getSharedPreferences("group.com.digitalocean.ocean", Context.MODE_PRIVATE)
                                         val connectionsJson = sharedPrefs.getString("connections", "[]") ?: "[]"
                                         val connections = try {
                                             Gson().fromJson(connectionsJson, Array<Connection>::class.java)?.filter {
